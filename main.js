@@ -53,12 +53,29 @@ function initializeRangeValues() {
 }
 
 function handleInputChange(event, isRange1) {
-  let newValue = event.target.value.replace(/[^0-9]/g, '') || min;
-  const otherInputValue = isRange1 ? +input2.value : +input1.value;
+  let newValue = +event.target.value.replace(/[^0-9]/g, '') || min;
 
-  if (newValue >= otherInputValue) newValue = otherInputValue - step;
-  if (newValue < min) newValue = min;
-
+  if (isRange1) {
+    if (newValue > max) {
+      newValue = max - step;
+    }
+    if (newValue >= +input2.value) {
+      range2.value = newValue + step;
+    }
+    if (newValue < min) {
+      newValue = min;
+    }
+  } else {
+    if (newValue > max) {
+      newValue = max;
+    }
+    if (newValue < min) {
+      newValue = min + step;
+    }
+    if (newValue <= +input1.value) {
+      range1.value = newValue - step;
+    }
+  }
   event.target.value = newValue;
   isRange1 ? (range1.value = newValue) : (range2.value = newValue);
   updateValues();

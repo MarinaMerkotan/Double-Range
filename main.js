@@ -110,8 +110,14 @@ function handleClickOnRangeContainer(event) {
   const containerRect = container.getBoundingClientRect();
   const containerWidth = containerRect.width;
   const clickPosition = event.clientX - containerRect.left;
-
-  range2.value = Math.round((clickPosition / containerWidth) * (max - min) + min);
+  const newValue = Math.round((clickPosition / containerWidth) * (max - min) + min);
+  const distanceToRange1 = Math.abs(range1.value - newValue);
+  const distanceToRange2 = Math.abs(range2.value - newValue);
+  if (distanceToRange1 < distanceToRange2) {
+    range1.value = newValue;
+  } else {
+    range2.value = newValue;
+  }
   updateValues();
 }
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Double Range</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section>
+    <div class="initial-values-container">
+      <h1>Enter the initial values</h1>
+      <div class="initial-values">
+        <label for="min-input">Min:</label>
+        <input id="min-input" class='input' type="number" value="0" min="0" />
+        
+        <label for="max-input">Max:</label>
+        <input id="max-input" class='input' type="number" value="100" min="1" />
+        
+        <label for="step-input">Step:</label>
+        <input id="step-input" class='input' type="number" value="1" step="1" min="1" />
+        
+        <button id="initial-ok-button">OK</button>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="input-container">
+        <input id="input1"class='input' value="0"/>
+        <span></span>
+        <input id="input2" class='input'value="0"/>
+      </div>
+      <button id="ok-button">OK</button>
+    </div>
+
+    <div id="range-container">
+      <div id="filled"></div>
+      <input type="range" id="range1" max="100" min="0">
+      <input type="range" id="range2" max="100" min="0">
+    </div>
+  </section>
+  <script src="main.js"></script>
+</body>
+</html>

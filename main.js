@@ -64,35 +64,6 @@ function initializeRangeValues() {
   updateValues();
 }
 
-function handleInputChange(event, isRange1) {
-  let newValue = +event.target.value.replace(/[^0-9]/g, '') || min;
-
-  if (isRange1) {
-    if (newValue > max) {
-      newValue = max - step;
-    }
-    if (newValue >= +input2.value) {
-      range2.value = newValue + step;
-    }
-    if (newValue < min) {
-      newValue = min;
-    }
-  } else {
-    if (newValue > max) {
-      newValue = max;
-    }
-    if (newValue < min) {
-      newValue = min + step;
-    }
-    if (newValue <= +input1.value) {
-      range1.value = newValue - step;
-    }
-  }
-  event.target.value = newValue;
-  isRange1 ? (range1.value = newValue) : (range2.value = newValue);
-  updateValues();
-}
-
 function updateValues() {
   let value1 = Math.min(range1.value, range2.value);
   let value2 = Math.max(range1.value, range2.value);
@@ -106,8 +77,8 @@ function updateValues() {
   }
 
   const rangeWidth = max - min;
-  const value1Percentage = Math.round(((value1 - min) / rangeWidth) * 100);
-  const value2Percentage = Math.round(((value2 - min) / rangeWidth) * 100);
+  const value1Percentage = (((value1 - min) / rangeWidth) * 100).toFixed(3);
+  const value2Percentage = (((value2 - min) / rangeWidth) * 100).toFixed(3);
 
   filled.style.left = `${value1Percentage}%`;
   filled.style.width = `${value2Percentage - value1Percentage}%`;
@@ -145,7 +116,9 @@ function handleClickOnRangeContainer(event) {
 }
 
 function handleClickButton() {
-  alert(`Minimum value - ${input1.value}, maximum value - ${input2.value}`);
+  range1.value = input1.value || min;
+  range2.value = input2.value || min;
+  updateValues();
 }
 
 function generateRandomNumbers(min, max) {
@@ -156,9 +129,6 @@ function generateRandomNumbers(min, max) {
 }
 
 initialOkButton.addEventListener('click', initializeRangeValues);
-
-input1.addEventListener('input', (event) => handleInputChange(event, true));
-input2.addEventListener('input', (event) => handleInputChange(event, false));
 
 range1.addEventListener('input', updateValues);
 range2.addEventListener('input', updateValues);

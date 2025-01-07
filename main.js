@@ -26,6 +26,10 @@ function initializeRangeValues() {
   step = +stepInput.value;
   rangeSize = +rangeSizeInput.value;
 
+  if (!max || !step || !rangeSize || !+windowWidthInput.value) {
+    alert('Invalid value entry.');
+    return;
+  }
   if (min > max) {
     alert('Min value cannot be greater than Max value.');
     return;

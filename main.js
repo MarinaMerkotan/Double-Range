@@ -1,7 +1,9 @@
 let min = 0;
 let max = 0;
 let step = 0;
+let rangeSize = 25;
 
+const sectionElement = document.querySelector('section');
 const initialValuesContainer = document.querySelector('.initial-values-container');
 const container = document.querySelector('.container');
 const filled = document.getElementById('filled');
@@ -15,11 +17,14 @@ const range2 = document.getElementById('range2');
 const minInput = document.getElementById('min-input');
 const maxInput = document.getElementById('max-input');
 const stepInput = document.getElementById('step-input');
+const rangeSizeInput = document.getElementById('range-size');
+const windowWidthInput = document.getElementById('window-width');
 
 function initializeRangeValues() {
   min = +minInput.value;
   max = +maxInput.value;
   step = +stepInput.value;
+  rangeSize = +rangeSizeInput.value;
 
   if (min > max) {
     alert('Min value cannot be greater than Max value.');
@@ -29,8 +34,9 @@ function initializeRangeValues() {
     alert('Step cannot be greater than the difference between Max and Min.');
     return;
   }
-  if ((max - min) % step !== 0) {
-    alert('Step must be a multiple of the difference between Max and Min.');
+
+  if (+windowWidthInput.value > innerWidth) {
+    alert('The window width cannot be larger than the screen size.');
     return;
   }
 
@@ -44,6 +50,8 @@ function initializeRangeValues() {
   range2.setAttribute('min', min);
   range2.setAttribute('max', max);
   range2.setAttribute('step', step);
+  document.documentElement.style.setProperty('--range-size', rangeSizeInput.value + 'px');
+  sectionElement.style.width = windowWidthInput.value + 'px';
 
   const [randomNumber1, randomNumber2] = generateRandomNumbers(min, max);
   range1.value = Math.min(randomNumber1, randomNumber2);
@@ -84,9 +92,8 @@ function handleInputChange(event, isRange1) {
 function updateValues() {
   let value1 = Math.min(range1.value, range2.value);
   let value2 = Math.max(range1.value, range2.value);
-
-  if (value1 === max) {
-    value1 = max - step;
+  if (value1 === Math.floor(max / step) * step) {
+    value1 = Math.floor(max / step) * step - step;
     range1.value = value1;
   }
   if (value2 === min) {
@@ -112,21 +119,20 @@ function handleClickOnRangeContainer(event) {
   const clickPosition = event.clientX - containerRect.left;
   const stepWidth = containerRect.width / ((max - min) / step);
 
-  const sliderWidth = 25;
   let newValue = (clickPosition / containerWidth) * (max - min) + min;
 
   const distanceToRange1 = Math.abs(range1.value - newValue);
   const distanceToRange2 = Math.abs(range2.value - newValue);
 
   if (distanceToRange1 < distanceToRange2) {
-    if (newValue < range1.value && stepWidth <= sliderWidth) {
-      const adjustedClickPosition = clickPosition - sliderWidth / 2;
+    if (newValue < range1.value && stepWidth <= rangeSize) {
+      const adjustedClickPosition = clickPosition - rangeSize / 2;
       newValue = (adjustedClickPosition / containerWidth) * (max - min) + min;
     }
     range1.value = newValue;
   } else {
-    if (newValue > range2.value && stepWidth <= sliderWidth) {
-      const adjustedClickPosition = clickPosition + sliderWidth / 2;
+    if (newValue > range2.value && stepWidth <= rangeSize) {
+      const adjustedClickPosition = clickPosition + rangeSize / 2;
       newValue = (adjustedClickPosition / containerWidth) * (max - min) + min;
     }
     range2.value = newValue;

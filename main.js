@@ -25,9 +25,14 @@ function initializeRangeValues() {
   max = +maxInput.value;
   step = +stepInput.value;
   rangeSize = +rangeSizeInput.value;
+  const windowWidth = +windowWidthInput.value;
 
-  if (!max || !step || !rangeSize || !+windowWidthInput.value) {
+  if (!max || !step || !rangeSize || !windowWidth) {
     alert('Invalid value entry.');
+    return;
+  }
+  if (windowWidth < 310) {
+    alert('Window width cannot be less than 310.');
     return;
   }
   if (min > max) {
@@ -39,7 +44,7 @@ function initializeRangeValues() {
     return;
   }
 
-  if (+windowWidthInput.value > innerWidth) {
+  if (windowWidth > innerWidth) {
     alert('The window width cannot be larger than the screen size.');
     return;
   }
@@ -55,7 +60,7 @@ function initializeRangeValues() {
   range2.setAttribute('max', max);
   range2.setAttribute('step', step);
   document.documentElement.style.setProperty('--range-size', rangeSizeInput.value + 'px');
-  sectionElement.style.width = windowWidthInput.value + 'px';
+  sectionElement.style.width = windowWidth + 'px';
 
   const [randomNumber1, randomNumber2] = generateRandomNumbers(min, max);
   range1.value = Math.min(randomNumber1, randomNumber2);
